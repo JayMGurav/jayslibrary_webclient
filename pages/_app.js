@@ -1,8 +1,11 @@
 import "@/styles/global.css"
+
 import { ChakraProvider } from "@chakra-ui/react"
-import theme from "@/styles/theme";
 import { useApollo } from "@/hooks/useApollo";
 import { ApolloProvider } from "@apollo/client";
+import { AnimatePresence } from "framer-motion"
+
+import theme from "@/styles/theme";
 
 function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState);
@@ -11,7 +14,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={apolloClient}>
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        <AnimatePresence exitBeforeEnter>
+          <Component {...pageProps} />
+        </AnimatePresence>
       </ChakraProvider>
     </ApolloProvider>
   )

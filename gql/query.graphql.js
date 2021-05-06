@@ -11,3 +11,35 @@ export const BOOKS_QUERY = gql`
     }
   }
 `;
+
+
+export const BOOK_DETAILS_QUERY = gql`
+  query Book($id: ID!){
+    book(id: $id){
+      id
+      title
+      author
+      info
+      caption
+      cover
+      stared
+    }
+  }
+`;
+
+export const BOOK_COMMENTS_QUERY = gql`
+  query BookComments($id: ID!){
+    book(id: $id){
+      id
+      title
+      comments{
+        id
+        comment
+        createdAt
+        book{
+          id
+        }     
+      }
+    }
+  }
+`;
