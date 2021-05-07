@@ -3,10 +3,10 @@ import { ApolloClient, InMemoryCache, split } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { HttpLink } from '@apollo/client/link/http';
 import { WebSocketLink } from 'apollo-link-ws';
-// https://jayslibrary-server.herokuapp.com/
 
-const LIBRARY_SERVER_HTTP_URL = process.env.LIBRARY_SERVER_HTTP_URL;
-const LIBRARY_SERVER_ws_URL = process.env.LIBRARY_SERVER_ws_URL;
+
+const LIBRARY_SERVER_HTTP_URL =  `https://${process.env.NEXT_PUBLIC_LIBRARY_SERVER_URL}/`;
+const LIBRARY_SERVER_WS_URL = `wss://${process.env.NEXT_PUBLIC_LIBRARY_SERVER_URL}/graphql`;
 
 let apolloClient;
 const cache = new InMemoryCache();
@@ -17,7 +17,7 @@ const libraryServerHttpLink = new HttpLink({
 });
 
 const libraryServerWsLink = new WebSocketLink({
-  uri: LIBRARY_SERVER_ws_URL,
+  uri: LIBRARY_SERVER_WS_URL,
   options: {
     lazy: true,
     reconnect: true,
