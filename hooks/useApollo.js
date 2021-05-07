@@ -5,8 +5,8 @@ import { HttpLink } from '@apollo/client/link/http';
 import { WebSocketLink } from 'apollo-link-ws';
 // https://jayslibrary-server.herokuapp.com/
 
-const LIBRARY_SERVER_HTTP_URL = `http://localhost:4000`;
-const LIBRARY_SERVER_ws_URL = `ws://localhost:4000/graphql`;
+const LIBRARY_SERVER_HTTP_URL = process.env.LIBRARY_SERVER_HTTP_URL;
+const LIBRARY_SERVER_ws_URL = process.env.LIBRARY_SERVER_ws_URL;
 
 let apolloClient;
 const cache = new InMemoryCache();
