@@ -5,8 +5,8 @@ import { HttpLink } from '@apollo/client/link/http';
 import { WebSocketLink } from 'apollo-link-ws';
 
 
-const LIBRARY_SERVER_HTTP_URL =  `https://${process.env.NEXT_PUBLIC_LIBRARY_SERVER_URL}/`;
-const LIBRARY_SERVER_WS_URL = `wss://${process.env.NEXT_PUBLIC_LIBRARY_SERVER_URL}/graphql`;
+const LIBRARY_SERVER_HTTP_URL =  `${process.env.NEXT_PUBLIC_LIBRARY_SERVER_URL}/`;
+const LIBRARY_SERVER_WS_URL = `ws://${process.env.NEXT_PUBLIC_LIBRARY_SERVER_URL}/graphql`;
 
 let apolloClient;
 const cache = new InMemoryCache();
