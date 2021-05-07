@@ -9,7 +9,6 @@ import theme from "@/styles/theme";
 
 function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState);
-  console.log(pageProps);
   
   return (
     <ApolloProvider client={apolloClient}>

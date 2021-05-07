@@ -31,15 +31,23 @@ export const BOOK_COMMENTS_QUERY = gql`
   query BookComments($id: ID!){
     book(id: $id){
       id
-      title
       comments{
         id
         comment
         createdAt
-        book{
-          id
-        }     
+        bookId    
       }
+    }
+  }
+`;
+
+
+export const BOOK_VOTES_QUERY = gql`
+  query BookVotes($id: ID!){
+    book(id: $id){
+      id
+      voteCount
+      votes
     }
   }
 `;

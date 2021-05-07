@@ -1,21 +1,49 @@
 import { useMemo } from 'react'
 import { ApolloClient, InMemoryCache, split } from '@apollo/client';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { HttpLink } from '@apollo/client/link/http';
+import { WebSocketLink } from 'apollo-link-ws';
+// https://jayslibrary-server.herokuapp.com/
 
+const LIBRARY_SERVER_HTTP_URL = `http://localhost:4000`;
+const LIBRARY_SERVER_ws_URL = `ws://localhost:4000/graphql`;
 
 let apolloClient;
 const cache = new InMemoryCache();
 
-const libraryServerLink = new HttpLink({
-  uri: "http://localhost:4000/",
+const libraryServerHttpLink = new HttpLink({
+  uri: LIBRARY_SERVER_HTTP_URL,
   credentials: 'include',
 });
+
+const libraryServerWsLink = new WebSocketLink({
+  uri: LIBRARY_SERVER_ws_URL,
+  options: {
+    lazy: true,
+    reconnect: true,
+    minTimeout: 9000,
+  },
+  webSocketImpl: require('websocket').w3cwebsocket
+});
+
+const splitLink = split(
+  ({query}) => {
+    const { kind, operation } = getMainDefinition(query);    
+    return (
+      kind === 'OperationDefinition' &&
+      operation === 'subscription'
+    );
+  },
+  libraryServerWsLink,
+  libraryServerHttpLink
+);
+
 
 
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: libraryServerLink,
+    link: splitLink,
     cache,
   });
 }

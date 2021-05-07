@@ -88,7 +88,7 @@ export default function BookDetailsPage({book}) {
             <MotionText variants={item} mt="6" fontSize="md" fontWeight="medium" letterSpacing="wide" color="gray.400" >
               WANT TO SHARE? <Text as="span" color="gray.800">Tell Twitter about it.</Text>
             </MotionText>
-            <BookUpvoteAndComment bookId={book.id}/>
+            <BookUpvoteAndComment bookId={book.id} title={book.title}/>
           </MotionBox>
         </Box>
       </Flex>
