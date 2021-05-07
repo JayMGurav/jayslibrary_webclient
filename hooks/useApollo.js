@@ -5,7 +5,7 @@ import { HttpLink } from '@apollo/client/link/http';
 import { WebSocketLink } from 'apollo-link-ws';
 
 
-const LIBRARY_SERVER_HTTP_URL =  `${process.env.NEXT_PUBLIC_LIBRARY_SERVER_URL}/`;
+const LIBRARY_SERVER_HTTP_URL =  `https://jayslibrary-server.herokuapp.com/`;
 const LIBRARY_SERVER_WS_URL = `ws://${process.env.NEXT_PUBLIC_LIBRARY_SERVER_URL}/graphql`;
 
 let apolloClient;
