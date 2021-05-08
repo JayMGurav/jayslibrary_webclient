@@ -5,9 +5,11 @@
     "author": "Jay Gurav <mrithyunjay2799@gmail.com> (http://github.com/JayMGurav)",
     "license": "MIT",
     "scripts": {
-        "dev": "next dev",
+        "dev": "next",
         "build": "next build",
-        "start": "next start"
+        "start": "next start -p $PORT",
+        "heroku-postbuild": "npm run build",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
         "@apollo/client": "^3.3.15",
@@ -25,5 +27,8 @@
         "react-hook-form": "^7.4.0",
         "subscriptions-transport-ws": "^0.9.18",
         "websocket": "^1.0.34"
+    },
+    "engines": {
+        "node": "14.x"
     }
 }
