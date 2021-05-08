@@ -27,8 +27,5 @@
         "react-hook-form": "^7.4.0",
         "subscriptions-transport-ws": "^0.9.18",
         "websocket": "^1.0.34"
-    },
-    "engines": {
-        "node": "14.x"
     }
 }
