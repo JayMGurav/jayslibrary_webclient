@@ -5,11 +5,11 @@ import { HttpLink } from '@apollo/client/link/http';
 import { WebSocketLink } from 'apollo-link-ws';
 
 
-// const LIBRARY_SERVER_HTTP_URL =  `https://jayslibrary-server.herokuapp.com/`;
-// const LIBRARY_SERVER_WS_URL = `wss://jayslibrary-server.herokuapp.com/graphqlSubscriptions`;
-
-const LIBRARY_SERVER_HTTP_URL =  `http://localhost:4000/`;
-const LIBRARY_SERVER_WS_URL = `ws://localhost:4000/graphqlSubscriptions`;
+const LIBRARY_SERVER_HTTP_URL =  `https://jayslibrary-server.herokuapp.com/`;
+const LIBRARY_SERVER_WS_URL = `wss://jayslibrary-server.herokuapp.com/graphqlSubscriptions`;
+// 
+// const LIBRARY_SERVER_HTTP_URL =  `http://localhost:4000/`;
+// const LIBRARY_SERVER_WS_URL = `ws://localhost:4000/graphqlSubscriptions`;
 
 let apolloClient;
 const cache = new InMemoryCache();
