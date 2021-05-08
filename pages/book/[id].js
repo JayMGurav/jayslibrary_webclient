@@ -1,6 +1,7 @@
 import NextLink from "next/link";
 import { useRouter } from 'next/router';
 import { useQuery } from "@apollo/client";
+import Head from 'next/head'
 
 
 import BookCoverFallback from "@/components/BookCoverFallback";
@@ -27,7 +28,7 @@ import useError from "@/hooks/useError";
 
 export default function BookDetailsPage({bookId}){
 
-  console.log({bookId});
+  // console.log({bookId});
   // const router = useRouter()
   // const { id } = router.query;
   const { isError, errorMsg, setError } = useError();
@@ -71,6 +72,10 @@ export default function BookDetailsPage({bookId}){
 
   return(
     <Layout>
+      <Head>
+        <title>Jay's Library | {book.title}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       { isError && (
         <Alert status="error" my="4" borderRadius="md" color="red.900">
           <AlertIcon />
@@ -125,6 +130,7 @@ export default function BookDetailsPage({bookId}){
                 w="fit-content"
                 color="gray.400"
                 variants={item}
+                colorScheme="blue"
               >
                 <ChevronLeftIcon/>  Back to Library
               </MotionLink>

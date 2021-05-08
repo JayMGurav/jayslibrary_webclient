@@ -31,7 +31,7 @@ export default function Book({book}){
         )}
         <MotionImage 
           src={book.cover} 
-          fallback={<BookCoverFallback title={book.title}/>} 
+          // fallback={<BookCoverFallback title={book.title}/>} 
           filter="drop-shadow(2px 25px 10px rgba(0, 0, 0, 0.15))" 
           boxSize="250"
           fit="contain"

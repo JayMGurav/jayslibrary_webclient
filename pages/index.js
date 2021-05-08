@@ -8,8 +8,12 @@ import {
   Text, 
   Alert,
   AlertDescription,
-  AlertIcon
+  AlertIcon,
+  Button,
+  Link
 } from "@chakra-ui/react";
+import NextLink from "next/link";
+import Head from 'next/head'
 
 // import { initializeApollo } from "@/hooks/useApollo";
 import useError from "@/hooks/useError";
@@ -17,7 +21,7 @@ import Book from "@/components/Book";
 import Layout from "@/components/Layout";
 import { MotionFlex } from "@/components/motionComponents";
 import { BOOKS_QUERY } from "@/gql/query.graphql";
-
+import router from "next/router";
 
 export default function Home(){
   const { isError, errorMsg, setError } = useError();
@@ -55,6 +59,10 @@ export default function Home(){
   
   return(
     <Layout>
+      <Head>
+        <title>Jay's Library</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Flex align="center" justify="center" py="16" textAlign="center">
         <Box maxW="2xl" px="4" >
           { isError && (
@@ -64,7 +72,13 @@ export default function Home(){
             </Alert>)
           }
           <Heading as="h1"  size="3xl" fontWeight="bold" m="8">Jay's Library</Heading>
-          <Text fontSize="xl" fontWeight="medium" noOfLines={2}>Books that I'm reading, read or would read and the ones that I think are worth paying attention to.</Text>
+          <Text fontSize="xl" fontWeight="medium" noOfLines={2}>Here is a collection of all the books that I am reading, read or would read and also the ones that I found interesting and are worth paying attention to.</Text>
+          <Text>or</Text>
+          <NextLink href="/suggestbook" passHref>
+            <Link fontSize="lg" color="blue.400" mt="4">
+              Suggest me a book
+            </Link>
+          </NextLink>
         </Box>
       </Flex>
       <MotionFlex 

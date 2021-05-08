@@ -27,16 +27,27 @@ export const BOOK_DETAILS_QUERY = gql`
   }
 `;
 
-export const BOOK_COMMENTS_QUERY = gql`
-  query BookComments($id: ID!){
-    book(id: $id){
+// export const BOOK_COMMENTS_QUERY = gql`
+//   query BookComments($id: ID!){
+//     book(id: $id){
+//       id
+//       comments{
+//         id
+//         comment
+//         createdAt
+//         bookId    
+//       }
+//     }
+//   }
+// `;
+
+export const COMMENTS_QUERY = gql`
+  query BookComments($bookId: ID!){
+    comments(bookId:$bookId){
       id
-      comments{
-        id
-        comment
-        createdAt
-        bookId    
-      }
+      comment
+      bookId
+      createdAt
     }
   }
 `;
@@ -48,6 +59,17 @@ export const BOOK_VOTES_QUERY = gql`
       id
       voteCount
       votes
+    }
+  }
+`;
+
+
+export const SUGGESTED_BOOKS = gql`
+  query {
+    suggestedBooks{
+      id
+      title
+      author
     }
   }
 `;

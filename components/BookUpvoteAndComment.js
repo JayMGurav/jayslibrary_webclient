@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { 
   Spinner, 
   Box, 
@@ -21,9 +21,9 @@ import { TriangleUpIcon, ChatIcon } from '@chakra-ui/icons'
 import { useForm } from "react-hook-form";
 
 import { MotionBox } from "@/components/motionComponents"
-import { BOOK_COMMENTS_QUERY, BOOK_VOTES_QUERY } from "@/gql/query.graphql";
+import { BOOK_VOTES_QUERY, COMMENTS_QUERY } from "@/gql/query.graphql";
 import { ADD_BOOK_COMMENT, UPVOTE_BOOK } from "@/gql/mutations.query";
-import { BOOK_UPVOTED_SUBSCRIPTION, COMMENT_CREATED_SUBSCRIPTION } from "@/gql/subscriptions.query";
+import { BOOK_UPVOTED_SUBSCRIPTION } from "@/gql/subscriptions.query";
 import useError from "@/hooks/useError";
 
 
@@ -34,8 +34,15 @@ export default function BookUpvoteAndComment({bookId,title}){
   const [loadingMsg, setLoadingMsg] = useState("");
 
   // Queries
-  const { data, loading: commentLoading, subscribeToMore:subscribeToComments } = useQuery(BOOK_COMMENTS_QUERY, {
-    variables: { id: bookId },
+  // const { data, loading: commentLoading, subscribeToMore:subscribeToComments } = useQuery(BOOK_COMMENTS_QUERY, {
+  //   variables: { id: bookId },
+  //   onError: (error) => {
+  //     setError(error.message);
+  //   }
+  // });
+  const { data, loading: commentLoading } = useQuery(COMMENTS_QUERY , {
+    variables: { bookId },
+    // pollInterval: 2000,
     onError: (error) => {
       setError(error.message);
     }
@@ -53,12 +60,34 @@ export default function BookUpvoteAndComment({bookId,title}){
     document: BOOK_UPVOTED_SUBSCRIPTION
   })
 
-  subscribeToComments({
-    document: COMMENT_CREATED_SUBSCRIPTION
-  })
+  // subscribeToComments({
+  //   document: COMMENT_CREATED_SUBSCRIPTION
+  // })
 
 
-  const [addComment] = useMutation(ADD_BOOK_COMMENT , {    
+  const [addComment] = useMutation(ADD_BOOK_COMMENT , {
+    refetchQueries: COMMENTS_QUERY,
+    update: (cache, { data: {addBookComment} }) => {      
+      cache.modify({
+        fields: {
+          comments(existingBookComments = []) {
+            const newCommentRef = cache.writeFragment({
+              data: addBookComment,
+              fragment: gql`
+                fragment NewComment on Comment {
+                  id
+                  comment
+                  bookId
+                  createdAt
+                }
+              `
+            });
+            
+            return [newCommentRef, ...existingBookComments ];
+          }
+        }
+      });
+    },
     onCompleted: () => {
       reset({comment:""});
       setLoading(() => {
@@ -68,6 +97,7 @@ export default function BookUpvoteAndComment({bookId,title}){
     },
     onError: (error) => {
       setError(error.message);
+      reset({comment:""});
       setLoading(() => {
         setLoadingMsg("");
         return false
@@ -79,13 +109,6 @@ export default function BookUpvoteAndComment({bookId,title}){
     variables:{
       bookId
     },    
-    // onCompleted: () => {
-      // reset({comment:""});
-      // setLoading(() => {
-      //   setLoadingMsg("");
-      //   return false
-      // });
-    // },
     onError: (error) => {
       setError(error.message);
     }
@@ -118,8 +141,8 @@ export default function BookUpvoteAndComment({bookId,title}){
     show: { opacity: 1 }
   }
 
-  const book = data?.book;
-
+  const comments = data?.comments;
+  
   return(
     <MotionBox  w="full" mt="4">
         { isError && (
@@ -143,7 +166,7 @@ export default function BookUpvoteAndComment({bookId,title}){
             {voteData?.book.voteCount} upvotes
         </Box>
         <Box d="inline">
-          <Icon as={ChatIcon}/> {book.comments.length} comments
+          <Icon as={ChatIcon}/> {comments.length} comments
         </Box>
       </Flex>
       <Box as="form" onSubmit={handleSubmit(onSubmit)}>
@@ -166,7 +189,7 @@ export default function BookUpvoteAndComment({bookId,title}){
         <Button type="submit" disabled={loading || isError } variant="pushableBlue" size="sm" >{loading ? loadingMsg : "Comment"}</Button>
       </Box>
       <VStack spacing="3" align="stretch" py="6"> 
-        {book.comments.map((comment) => (
+        {comments.map((comment) => (
             <Box key={comment.id} bg="gray.50" p="2" borderRadius="md" boxShadow="sm">
               <Text fontSize="xs" color="gray.400">Posted on: {new Date(Number(comment.createdAt)).toLocaleString('en-US')}</Text>
               <Text>{comment.comment}</Text>
