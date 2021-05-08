@@ -14,7 +14,6 @@ import {
   FormLabel,
   FormControl,
   Alert,
-  AlertTitle,
   AlertDescription,
   AlertIcon
 } from "@chakra-ui/react";
@@ -122,11 +121,10 @@ export default function BookUpvoteAndComment({bookId,title}){
   const book = data?.book;
 
   return(
-    <MotionBox variants={item} w="full" mt="4">
+    <MotionBox  w="full" mt="4">
         { isError && (
           <Alert status="error" my="4" borderRadius="md" color="red.900">
             <AlertIcon />
-            <AlertTitle mr={2}>Error!</AlertTitle>
             <AlertDescription>{errorMsg}</AlertDescription>
           </Alert>)
         }

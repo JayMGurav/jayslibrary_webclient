@@ -9,7 +9,7 @@ export default function Layout({children}) {
       mx="auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 0.15 }}
+      transition={{ delay: 0.25 }}
       exit={{ opacity: 0 }}
       px="4"
     >

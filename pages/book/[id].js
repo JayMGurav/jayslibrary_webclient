@@ -1,22 +1,62 @@
 import NextLink from "next/link";
+import { useRouter } from 'next/router';
+import { useQuery } from "@apollo/client";
+
+
 import BookCoverFallback from "@/components/BookCoverFallback";
 import Layout from "@/components/Layout";
 import { MotionBox, MotionImage, MotionText, MotionLink, MotionHeading } from "@/components/motionComponents"
-import { Box, Flex, Text, Center } from "@chakra-ui/react";
+import { 
+  Box, 
+  Flex, 
+  Text, 
+  Center,
+  Alert,
+  Spinner,
+  AlertDescription,
+  AlertIcon,
+  Link
+} from "@chakra-ui/react";
 
 import { ChevronLeftIcon } from '@chakra-ui/icons'
-import { initializeApollo } from "@/hooks/useApollo";
+// import { initializeApollo } from "@/hooks/useApollo";
 import { BOOK_DETAILS_QUERY } from "@/gql/query.graphql";
 import BookUpvoteAndComment from "@/components/BookUpvoteAndComment";
+import useError from "@/hooks/useError";
 
 
-export default function BookDetailsPage({book}) {
+export default function BookDetailsPage({bookId}){
+
+  console.log({bookId});
+  // const router = useRouter()
+  // const { id } = router.query;
+  const { isError, errorMsg, setError } = useError();
+
+  const { data, loading } = useQuery(BOOK_DETAILS_QUERY, {
+    // skip: book,
+    variables:{
+      id: bookId
+    },
+    onError: (error) => {
+      setError(error.message);
+    }
+  });
+
+  if(loading){
+    return(
+      <Flex w="full" h="100vh" align="center" justify="center">
+        <Spinner size="lg" color="blue.600" thickness="2px"/>
+      </Flex>
+    )
+  }
+
   const container = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.1,
+        delay: 0.35
       }
     }
   }
@@ -26,8 +66,18 @@ export default function BookDetailsPage({book}) {
     show: { opacity: 1 }
   }
 
+
+  const book = data?.book;
+
   return(
     <Layout>
+      { isError && (
+        <Alert status="error" my="4" borderRadius="md" color="red.900">
+          <AlertIcon />
+          <AlertDescription>{errorMsg}</AlertDescription>
+        </Alert>
+        )
+      }
       <Flex w="100%" wrap="wrap" py="4"  style={{gap: "2ch"}} pos="relative">
         <Center 
           flex="1 1 30ch" 
@@ -46,14 +96,14 @@ export default function BookDetailsPage({book}) {
         >
           <MotionImage
             src={book.cover} 
-            fallback={<BookCoverFallback title={book.title}/>} 
+            // fallback={<BookCoverFallback title={book.title}/>} 
             filter="drop-shadow(2px 25px 10px rgba(0, 0, 0, 0.15));" 
             boxSize="350"
             fit="contain"
             align="center"
             initial={{ x: 60, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.15 }}
+            transition={{ delay: 0.35 }}
             exit={{ x: 60, opacity: 0 }}
           />
         </Center>
@@ -86,7 +136,7 @@ export default function BookDetailsPage({book}) {
             <MotionText variants={item} letterSpacing="wide" mb="6" fontSize="xl" >{book.caption}</MotionText>
             <MotionText variants={item} letterSpacing="wide" fontSize="md">{book.info}</MotionText>
             <MotionText variants={item} mt="6" fontSize="md" fontWeight="medium" letterSpacing="wide" color="gray.400" >
-              WANT TO SHARE? <Text as="span" color="gray.800">Tell Twitter about it.</Text>
+              WANT TO SHARE? <Link href="http://twitter.com" color="gray.800" rel="noopener noreferer" isExternal>Tell Twitter about it.</Link>
             </MotionText>
             <BookUpvoteAndComment bookId={book.id} title={book.title}/>
           </MotionBox>
@@ -100,28 +150,28 @@ export default function BookDetailsPage({book}) {
 
 export async function getServerSideProps(context) {
   const {id} = context.params;
-  const client = initializeApollo()
-  if(client){
-    const { data } = await client.query({
-      query: BOOK_DETAILS_QUERY,
-      variables:{
-        id
-      },
-      context: {
-        headers: {
-          ...context.req.headers
-        },
-      },
-    });
-    return {
-      props: {
-        book: data.book
-      },
-    };
-  }
+  // const client = initializeApollo()
+  // if(client){
+  //   const { data } = await client.query({
+  //     query: BOOK_DETAILS_QUERY,
+  //     variables:{
+  //       id
+  //     },
+  //     context: {
+  //       headers: {
+  //         ...context.req.headers
+  //       },
+  //     },
+  //   });
+  //   return {
+  //     props: {
+  //       book: data.book
+  //     },
+  //   };
+  // }
   return {
     props: {
-      book: null
+      bookId: id
     },
   };
 }

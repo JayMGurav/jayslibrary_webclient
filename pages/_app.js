@@ -1,5 +1,3 @@
-import "@/styles/global.css"
-
 import { ChakraProvider } from "@chakra-ui/react"
 import { useApollo } from "@/hooks/useApollo";
 import { ApolloProvider } from "@apollo/client";
