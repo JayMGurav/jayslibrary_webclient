@@ -22,6 +22,7 @@ import Layout from "@/components/Layout";
 import { MotionFlex } from "@/components/motionComponents";
 import { BOOKS_QUERY } from "@/gql/query.graphql";
 import router from "next/router";
+import SEO from "@/components/Seo";
 
 export default function Home(){
   const { isError, errorMsg, setError } = useError();
@@ -45,7 +46,7 @@ export default function Home(){
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.5
+        staggerChildren: 0.35
       }
     }
   }
@@ -59,8 +60,10 @@ export default function Home(){
   
   return(
     <Layout>
+      <SEO title="Jays Library" description="Here is a collection of all the books that I am reading, read or would read also the ones that I found interesting and are worth paying attention to." url={window.location.href}/>
       <Head>
         <title>Jay's Library</title>
+        
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Flex align="center" justify="center" py="16" textAlign="center">
@@ -71,8 +74,19 @@ export default function Home(){
               <AlertDescription>{errorMsg}</AlertDescription>
             </Alert>)
           }
-          <Heading as="h1"  size="3xl" fontWeight="bold" m="8">Jay's Library</Heading>
-          <Text fontSize="xl" fontWeight="medium" noOfLines={2}>Here is a collection of all the books that I am reading, read or would read and also the ones that I found interesting and are worth paying attention to.</Text>
+          <Heading as="h1"  size="3xl" fontWeight="bold" m="8" mb="6">Jay's Library</Heading>
+          <Flex style={{gap: "2ch"}} align="center" justify="center" mb="8" color="blue.400">
+            <Link rel="noopener noreferer" href="https://twitter.com/JayMGurav" isExternal>
+              Twitter
+            </Link>
+            <Link rel="noopener noreferer" href="https://github.com/JayMGurav" isExternal>
+              GitHub
+            </Link>
+            <Link rel="noopener noreferer" href="https://linkedin.com/in/JayMGurav" isExternal>
+              LinkedIn
+            </Link>
+          </Flex>
+          <Text fontSize="xl" fontWeight="medium" >Here is a collection of all the books that I am reading, read or would read also the ones that I found interesting and are worth paying attention to.</Text>
           <Text>or</Text>
           <NextLink href="/suggestbook" passHref>
             <Link fontSize="lg" color="blue.400" mt="4">

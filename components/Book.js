@@ -22,6 +22,7 @@ export default function Book({book}){
       borderRadius="lg"
       variants={item}
       whileHover={{ scale: 1.045 }}
+      maxW="md"
     >
       <Center w="xs" h="sm" bg="white" borderRadius="lg" pos="relative">
         {book.stared && (
@@ -31,7 +32,7 @@ export default function Book({book}){
         )}
         <MotionImage 
           src={book.cover} 
-          // fallback={<BookCoverFallback title={book.title}/>} 
+          fallback={<BookCoverFallback title={book.title}/>} 
           filter="drop-shadow(2px 25px 10px rgba(0, 0, 0, 0.15))" 
           boxSize="250"
           fit="contain"
@@ -46,7 +47,7 @@ export default function Book({book}){
         <NextLink href="/book/[id]" as={`/book/${book.id}`} passHref 
         >
         <LinkOverlay >
-          <Text fontSize="2xl" fontWeight="medium">{book.title}</Text>
+          <Text wordBreak="break-word" maxW="xs" fontSize="xl" fontWeight="medium">{book.title}</Text>
         </LinkOverlay>
         </NextLink>
         <Text fontSize="md" fontWeight="medium" letterSpacing="wide">{book.author}</Text>

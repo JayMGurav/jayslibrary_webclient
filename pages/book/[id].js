@@ -24,6 +24,7 @@ import { ChevronLeftIcon } from '@chakra-ui/icons'
 import { BOOK_DETAILS_QUERY } from "@/gql/query.graphql";
 import BookUpvoteAndComment from "@/components/BookUpvoteAndComment";
 import useError from "@/hooks/useError";
+import SEO from "@/components/Seo";
 
 
 export default function BookDetailsPage({bookId}){
@@ -72,6 +73,7 @@ export default function BookDetailsPage({bookId}){
 
   return(
     <Layout>
+       <SEO title={`${book.title}`} description={`${book.title} from Jay's Library`} url={window.location.href}/>
       <Head>
         <title>Jay's Library | {book.title}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -142,7 +144,7 @@ export default function BookDetailsPage({bookId}){
             <MotionText variants={item} letterSpacing="wide" mb="6" fontSize="xl" >{book.caption}</MotionText>
             <MotionText variants={item} letterSpacing="wide" fontSize="md">{book.info}</MotionText>
             <MotionText variants={item} mt="6" fontSize="md" fontWeight="medium" letterSpacing="wide" color="gray.400" >
-              WANT TO SHARE? <Link href="http://twitter.com" color="gray.800" rel="noopener noreferer" isExternal>Tell Twitter about it.</Link>
+              WANT TO SHARE? <Link href={`http://twitter.com/share?text=I just now found an interesting book titled "${book.title}" from @JayMGurav library.&url=${window.location.href}&hashtags=GoodReads,Books`} color="gray.800" rel="noopener noreferer" isExternal>Tell Twitter about it.</Link>
             </MotionText>
             <BookUpvoteAndComment bookId={book.id} title={book.title}/>
           </MotionBox>
