@@ -109,7 +109,7 @@ export default function SuggestedBooks(){
       <Flex align="center" justify="center" py="16" textAlign="center">
         <Box maxW="2xl" px="4">
           <Heading as="h1"  size="xl" fontWeight="bold" m="2">Suggest me a book📖</Heading>
-          <Text fontSize="lg" fontWeight="medium">Tell me some of the precious good reads of any genre, that you found interesting!</Text>
+          <Text fontSize="lg" fontWeight="medium">Tell me some of your precious good reads of any genre, that you found interesting!</Text>
           <Text>or</Text>
           <NextLink href="/" passHref>
             <Link fontSize="lg" color="blue.400" mt="4">

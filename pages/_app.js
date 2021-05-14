@@ -4,6 +4,7 @@ import { ApolloProvider } from "@apollo/client";
 import { AnimatePresence } from "framer-motion"
 
 import theme from "@/styles/theme";
+import "@/styles/global.style.css"
 
 function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState);

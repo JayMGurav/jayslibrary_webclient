@@ -1,10 +1,10 @@
 import NextLink from "next/link";
-import { Box, Center, Text, Image,  LinkBox, LinkOverlay } from "@chakra-ui/react";
+import { Box, Center, Text,  LinkBox, LinkOverlay } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
-import { MotionImage, MotionLinkBox } from "./motionComponents";
-import BookCoverFallback from "./BookCoverFallback";
+import { MotionLinkBox } from "./motionComponents";
+// import BookCoverFallback from "./BookCoverFallback";
 
-
+import Image from 'next/image'
 
 
 export default function Book({book}){
@@ -30,17 +30,20 @@ export default function Book({book}){
             <StarIcon color="#ffc386"/>
           </Box>
         )}
-        <MotionImage 
+        <Image 
           src={book.cover} 
-          fallback={<BookCoverFallback title={book.title}/>} 
-          filter="drop-shadow(2px 25px 10px rgba(0, 0, 0, 0.15))" 
-          boxSize="250"
-          fit="contain"
-          align="center"
-          initial={{ x: 60, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 0.25 }}
-          exit={{ x: 60, opacity: 0 }}
+          className="dropShadow"
+          width="250"
+          height="300"
+          layout="fixed"
+          quality="60"
+          loading ="lazy"
+          objectFit="contain"
+          objectPosition="center top"
+          // initial={{ x: 60, opacity: 0 }}
+          // animate={{ x: 0, opacity: 1 }}
+          // transition={{ delay: 0.25 }}
+          // exit={{ x: 60, opacity: 0 }}
         />
       </Center>
       <Box my="4" >

@@ -21,10 +21,10 @@ import Book from "@/components/Book";
 import Layout from "@/components/Layout";
 import { MotionFlex } from "@/components/motionComponents";
 import { BOOKS_QUERY } from "@/gql/query.graphql";
-import router from "next/router";
+import { useRouter } from "next/router";
 import SEO from "@/components/Seo";
 
-export default function Home(){
+export default function Home({fullUrl}){ 
   const { isError, errorMsg, setError } = useError();
 
   const { data, loading } = useQuery(BOOKS_QUERY, {
@@ -60,7 +60,7 @@ export default function Home(){
   
   return(
     <Layout>
-      <SEO title="Jays Library" description="Here is a collection of all the books that I am reading, read or would read also the ones that I found interesting and are worth paying attention to." url={window.location.href}/>
+      <SEO title="Jays Library" description="Here is a collection of all the books that I am reading, read or would read also the ones that I found interesting and are worth paying attention to." url={fullUrl}/>
       <Head>
         <title>Jay's Library</title>
         
@@ -130,26 +130,18 @@ export default function Home(){
 }
 
 
-// export async function getServerSideProps(context) {
-//   const client = initializeApollo()
-//   if(client){
-//     const { data } = await client.query({
-//       query: BOOKS_QUERY,
-//       context: {
-//         headers: {
-//           ...context.req.headers
-//         },
-//       },
-//     });
-//     return {
-//       props: {
-//         books: data.books
-//       },
-//     };
-//   }
-//   return {
-//     props: {
-//       books: []
-//     },
-//   };
-// }
+export async function getServerSideProps({req}) {
+  let fullUrl
+  if (req) {
+     // Server side rendering
+     fullUrl = req.headers.referer
+   } else {
+     // Client side rendering
+     fullUrl = window.location.href;
+   }
+  return {
+    props: {
+      fullUrl
+    },
+  };
+}

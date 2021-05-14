@@ -6,7 +6,7 @@ import Head from 'next/head'
 
 import BookCoverFallback from "@/components/BookCoverFallback";
 import Layout from "@/components/Layout";
-import { MotionBox, MotionImage, MotionText, MotionLink, MotionHeading } from "@/components/motionComponents"
+import { MotionBox, MotionChakraImage, MotionText, MotionLink, MotionHeading } from "@/components/motionComponents"
 import { 
   Box, 
   Flex, 
@@ -27,11 +27,7 @@ import useError from "@/hooks/useError";
 import SEO from "@/components/Seo";
 
 
-export default function BookDetailsPage({bookId}){
-
-  // console.log({bookId});
-  // const router = useRouter()
-  // const { id } = router.query;
+export default function BookDetailsPage({bookId, fullUrl}){
   const { isError, errorMsg, setError } = useError();
 
   const { data, loading } = useQuery(BOOK_DETAILS_QUERY, {
@@ -73,7 +69,7 @@ export default function BookDetailsPage({bookId}){
 
   return(
     <Layout>
-       <SEO title={`${book.title}`} description={`${book.title} from Jay's Library`} url={window.location.href}/>
+       <SEO title={`${book.title}`} description={`${book.title} from Jay's Library`} url={fullUrl}/>
       <Head>
         <title>Jay's Library | {book.title}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -101,9 +97,9 @@ export default function BookDetailsPage({bookId}){
           }} 
           top="10"
         >
-          <MotionImage
+          <MotionChakraImage
             src={book.cover} 
-            // fallback={<BookCoverFallback title={book.title}/>} 
+            fallback={<BookCoverFallback title={book.title}/>} 
             filter="drop-shadow(2px 25px 10px rgba(0, 0, 0, 0.15));" 
             boxSize="350"
             fit="contain"
@@ -156,30 +152,20 @@ export default function BookDetailsPage({bookId}){
 
 
 
-export async function getServerSideProps(context) {
-  const {id} = context.params;
-  // const client = initializeApollo()
-  // if(client){
-  //   const { data } = await client.query({
-  //     query: BOOK_DETAILS_QUERY,
-  //     variables:{
-  //       id
-  //     },
-  //     context: {
-  //       headers: {
-  //         ...context.req.headers
-  //       },
-  //     },
-  //   });
-  //   return {
-  //     props: {
-  //       book: data.book
-  //     },
-  //   };
-  // }
+export async function getServerSideProps({req, params}) {
+  const {id} = params;
+  let fullUrl
+  if (req) {
+     // Server side rendering
+     fullUrl = req.headers.referer;
+   } else {
+     // Client side rendering
+     fullUrl = window.location.href;
+   }
   return {
     props: {
-      bookId: id
+      bookId: id,
+      fullUrl
     },
   };
 }

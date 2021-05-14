@@ -4,7 +4,7 @@ import { ChevronUpIcon } from "@chakra-ui/icons";
 import { IconButton } from "@chakra-ui/react";
 
 
-export default function Layout({children}) {
+export default function Layout({children}) {  
   const [isBtnVisible, scrollToTop] = useScrollToTop ();
 
   return(
